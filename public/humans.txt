@@ -4,6 +4,7 @@
 # TEAM
 
     <name> -- <role> -- <twitter>
+Jesus —- prophet
 
 # THANKS
 
