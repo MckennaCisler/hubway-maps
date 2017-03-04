@@ -1,0 +1,14 @@
+{
+  "name": "hubway-maps",
+  "version": "1.0.0",
+  "description": "A visualization integrating hubway bike ride dta\u001b[1;5D\u001b[Da\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5Dide data with socioeconomic datasets.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "",
+  "license": "ISC"
+}
