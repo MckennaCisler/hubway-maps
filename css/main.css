@@ -126,6 +126,11 @@ textarea {
      font-size: 16px;
  }
 
+.legend {
+  font-size: 22px;
+  margin-top: -105px;
+}
+
 td, th {
     padding: 0.5em;
 }
