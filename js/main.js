@@ -22,6 +22,15 @@ $(document).ready(() => {
     var geoPath = d3.geoPath()
         .projection(albersProjection);
 
+    var color = d3.scaleLinear()
+      .domain([0, 0.3])
+      .clamp(true)
+      .range(['#f2f2f2', '#cc0000']);
+
+    function fillFn(d){
+      return color(d.properties.poverty_rate);
+    }
+
     document.onmousemove = function(e) {
       div.attr("style", "left:" + (e.pageX + 25) + "px;top:" + e.pageY + "px");
     };
@@ -39,23 +48,21 @@ $(document).ready(() => {
           .data(features)
           .enter().append("path")
           .attr("d", geoPath)
-          .attr("fill", "#d3d3d3")
-          .attr("stroke", "#555")
+          .style("fill", fillFn)
+          .style("stroke", '#000000')
           .attr("class", "boundary")
           .on("mouseover", function(d) {
               d3.select(this).transition()
               .duration(HOVER_TRANS_MS)
-              .attr("fill", "#3978e5").attr("stroke", "#3978e5");
-              
+              .style("opacity", "1");
               div.classed("hidden", false);
-              div.style("opacity", 1);
+              div.style("opacity", "1");
               div.html(getTractTooltip(d));
             })
           .on("mouseout", function(d) {
               d3.select(this).transition()
-              .duration(HOVER_TRANS_MS)
-              .attr("fill", "#d3d3d3").attr("stroke", "#555");
-              
+              .style("opacity", "0.75")
+              .duration(HOVER_TRANS_MS);
               div.classed("hidden", true);
            });
       }
@@ -87,7 +94,7 @@ $(document).ready(() => {
                         .transition()
                           .duration(HOVER_TRANS_MS)
                           .attr("r",10);
-                          
+
                         div.classed("hidden", false);
                         div.style("opacity", 1);
                         div.html(getStationTooltip(d));
@@ -97,7 +104,7 @@ $(document).ready(() => {
                         .transition()
                           .duration(HOVER_TRANS_MS)
                           .attr("r", 5);
-                          
+
                         div.classed("hidden", true);
                   });
               }
@@ -108,11 +115,11 @@ $(document).ready(() => {
 function getTractTooltip(d) {
     return "Population: <b>" + d.properties.population + "</b><br>" +
             "Poverty rate: <b>" + Math.round(d.properties.poverty_rate * 1000) / 10 + "%</b><br>" +
-            "# of hubway stations: <b>" + d.properties.station;
+            "# of hubway stations: <b>" + d.properties.stations;
 }
 
 function getStationTooltip(d) {
-    return d.properties.station + "</br>" + 
+    return d.properties.station + "</br>" +
             d.properties.municipal + "</br>" +
             d.properties.status;
 }
