@@ -1,3 +1,4 @@
+sep=,
 id,terminal,station,municipal,lat,lng,status
 3,B32006,Colleges of the Fenway,Boston,42.340021,-71.100812,Existing
 4,C32000,Tremont St. at Berkeley St.,Boston,42.345392,-71.069616,Existing
