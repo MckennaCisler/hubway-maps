@@ -93,7 +93,6 @@ $(document).ready(() => {
             })
           .on("mouseout", function(d) {
               d3.select(this).transition()
-              .style("opacity", "0.75")
               .style("fill", fillFn)
               .duration(HOVER_TRANS_MS);
               div.classed("hidden", true);
