@@ -5,21 +5,7 @@ var fs = require('fs');
 var app = express();
 app.use(express.static('public'));
 
-const STATIONS_FILE = 'public/data/hubway_stations.csv';
-
-// data
-var stations = [];
-
-app.post("/stations", function(req, res) {
-	res.send(stations);
-});
-
 app.listen(3000, function () {
-	console.log("Loading stations csv...");
-	loadCSV(STATIONS_FILE, function(results) {
-		stations = results;
-		console.log("Finished loading stations!");
-	});
 	
 	console.log('Hubway listening on port 3000!');
 });
