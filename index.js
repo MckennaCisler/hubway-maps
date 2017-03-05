@@ -32,7 +32,6 @@ app.listen(3000, function () {
 	})
     .on('end',function() {
 		console.log("Finished loading stations!");
-		console.log(stations);
     });
 	
 	console.log('Hubway listening on port 3000!');

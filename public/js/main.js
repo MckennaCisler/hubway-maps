@@ -8,7 +8,8 @@ $(document).ready(() => {
         stations = responseJSON;
         console.log(responseJSON);
         
-        d3.select("#station-table")
+        d3.select("#station-table > tbody")
+            .selectAll("tr")
             .data(responseJSON)
             .enter().append("tr")
               .html(function(data) {
