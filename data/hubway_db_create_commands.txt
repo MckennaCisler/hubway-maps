@@ -1,0 +1,30 @@
+# sqlite commands to create sqlite3 database from hubway csv files
+
+create table trips(seq_id 	SEQUENCE primary key,
+  hubway_id 	bigint,
+  status 	character varying(10),
+  duration 	integer,
+  start_date 	timestamp without time zone,
+  strt_statn 	integer,
+  end_date 	timestamp without time zone,
+  end_statn 	integer,
+  bike_nr 	character varying(20),
+  subsc_type 	character varying(20),
+  zip_code 	character varying(6),
+  birth_date 	integer,
+  gender 	character varying(10));
+  
+create table stations(id,terminal,station,municipal,lat,lng,status);
+
+.mode csv
+.import hubway_stations.csv stations
+.import hubway_trips.csv trips
+create index trip_strt_statn on trips(strt_statn);
+create index trip_end_statn on trips(end_statn);
+create index trip_zip_code on trips(zip_code);
+.backup hubway_data.sqlite3
+
+# commands
+select * from stations as s, trips as t where t.strt_statn=s.id or t.end_statn=s.id group by s.id limit 5;
+select s.id, s.station, count(t.zip_code) from stations as s, trips as t where t.strt_statn=s.id or t.end_statn=s.id group by s.id limit 15;
+select s.id, t.zip_code, s.station, count(t.zip_code) from stations as s, trips as t where t.strt_statn=s.id or t.end_statn=s.id group by t.zip_code limit 15;
