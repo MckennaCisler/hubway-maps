@@ -46,14 +46,16 @@ $(document).ready(() => {
               d3.select(this).transition()
               .duration(HOVER_TRANS_MS)
               .attr("fill", "#3978e5").attr("stroke", "#3978e5");
+              
               div.classed("hidden", false);
               div.style("opacity", 1);
-              div.html(d.properties.population + "<br>" + d.properties.poverty_rate + "<br>" + d.properties.stations);
+              div.html(getTractTooltip(d));
             })
           .on("mouseout", function(d) {
-              d3.select(this)
+              d3.select(this).transition()
               .duration(HOVER_TRANS_MS)
               .attr("fill", "#d3d3d3").attr("stroke", "#555");
+              
               div.classed("hidden", true);
            });
       }
@@ -80,19 +82,37 @@ $(document).ready(() => {
                   .attr("fill", "#191919")
                   .style("z-index", 1000)
                   .attr("r", 5)
-                  .on("mouseover", function() {
+                  .on("mouseover", function(d) {
                         d3.select(this)
                         .transition()
                           .duration(HOVER_TRANS_MS)
                           .attr("r",10);
+                          
+                        div.classed("hidden", false);
+                        div.style("opacity", 1);
+                        div.html(getStationTooltip(d));
                     })
                   .on("mouseout", function() {
                         d3.select(this)
                         .transition()
                           .duration(HOVER_TRANS_MS)
                           .attr("r", 5);
+                          
+                        div.classed("hidden", true);
                   });
               }
           });
   });
 });
+
+function getTractTooltip(d) {
+    return d.properties.population + "</br>" + 
+            d.properties.poverty_rate + "</br>" +
+            d.properties.stations;
+}
+
+function getStationTooltip(d) {
+    return d.properties.station + "</br>" + 
+            d.properties.municipal + "</br>" +
+            d.properties.status;
+}
