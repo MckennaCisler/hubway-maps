@@ -22,7 +22,6 @@ $(document).ready(() => {
     var geoPath = d3.geoPath()
         .projection(albersProjection);
 
-     
         
     // Load map data
     d3.json('cambridge.geo.json', function(error, mapData) {
