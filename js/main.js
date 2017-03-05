@@ -54,8 +54,8 @@ $(document).ready(() => {
           .data(features)
           .enter().append("path")
           .attr("d", geoPath)
-          .attr("fill", "#4d4d4d")
-          .attr("class", "boundary");
+          .attr("fill", "#d3d3d3")
+          .attr("stroke", "#555");
       }
     });
 });
