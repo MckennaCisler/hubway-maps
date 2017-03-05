@@ -1,48 +1,61 @@
-var width = 700,
-    height = 580;
+var stations = [];
 
-var svg = d3.select("svg");
+// Waits for DOM to load before running
+$(document).ready(() => {
 
-var mapLayer = svg.append("g")
-  .classed('map-layer', true);
+    // Create table out of stations
+    $.post("/stations",  responseJSON => {
+        stations = responseJSON;
+        console.log(responseJSON);
 
-var albersProjection = d3.geoAlbers()
-  .scale(500000)
-  .rotate([71.1097, 0])
-  .center([0, 42.3736])
-  .translate([width/2, height/2]);
+        d3.select("#station-table")
+            .data(responseJSON)
+            .enter().append("tr")
+              .html(function(data) {
+                var innerHTML = "";
+                    for (let stationProp in data) {
+                        if (data.hasOwnProperty(stationProp)) {
+                            innerHTML += "<td>" + data[stationProp] +"</td>";
+                        }
+                    }
+                    return innerHTML;
+                });
+    });
 
-var geoPath = d3.geoPath()
-    .projection(albersProjection);
 
-/*
-var mapData = d3.json('cambridge.geo.json');
-console.log(mapData.features);
-console.log(mapData.features.selectAll("geometry"));
+    var width = 700,
+        height = 580;
 
-mapLayer.selectAll("path")
-  .data(mapData.features.selectAll("geometry"))
-  .enter()
-  .append("path")
-  .attr("fill", "#ccc")
-  .attr("d" , geoPath);
-*/
+    var svg = d3.select("svg");
 
-// Load map data
-d3.json('cambridge.geo.json', function(error, mapData) {
-  if (error) {
-    console.log(error);
-  } else {
-    var features = mapData.features;
-    console.log(features);
-    console.log(mapLayer);
+    var mapLayer = svg.append("g")
+      .classed('map-layer', true);
 
-    // Draw each province as a path
-    mapLayer.selectAll("path")
-      .data(features)
-      .enter().append("path")
-      .attr("d", geoPath)
-      .attr("fill", "#4d4d4d")
-      .attr("class", "boundary");
-  }
+    var albersProjection = d3.geoAlbers()
+      .scale(500000)
+      .rotate([71.1097, 0])
+      .center([0, 42.3736])
+      .translate([width/2, height/2]);
+
+    var geoPath = d3.geoPath()
+        .projection(albersProjection);
+
+    // Load map data
+    d3.json('cambridge.geo.json', function(error, mapData) {
+      if (error) {
+        console.log(error);
+      } else {
+        var features = mapData.features;
+        console.log(features);
+        console.log(mapLayer);
+
+        // Draw each province as a path
+        mapLayer.selectAll("path")
+          .data(features)
+          .enter().append("path")
+          .attr("d", geoPath)
+          .attr("fill", "#4d4d4d")
+          .attr("class", "boundary");
+      }
+    });
 });
