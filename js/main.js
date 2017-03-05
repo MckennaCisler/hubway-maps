@@ -27,7 +27,7 @@ $(document).ready(() => {
     };
 
     // Load map data
-    d3.json('cambridge.geo.json', function(error, mapData) {
+    d3.json('data/complete_data.json', function(error, mapData) {
       if (error) {
         console.log(error);
       } else {
@@ -48,7 +48,7 @@ $(document).ready(() => {
               .attr("fill", "#3978e5").attr("stroke", "#3978e5");
               div.classed("hidden", false);
               div.style("opacity", 1);
-              div.html(d.id);
+              div.html(d.properties.population + "<br>" + d.properties.poverty_rate + "<br>" + d.properties.stations);
             })
           .on("mouseout", function(d) {
               d3.select(this)
