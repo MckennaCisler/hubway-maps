@@ -48,7 +48,9 @@ $(document).ready(() => {
               d3.select(this).attr("fill", "#3978e5").attr("stroke", "#3978e5");
               div.classed("hidden", false);
               div.style("opacity", 1);
-              div.html(d.properties.population + "<br>" + d.properties.poverty_rate + "<br>" + d.properties.stations);
+              div.html("Population: <b>" + d.properties.population + "</b><br>"
+                + "Poverty rate: <b>" + Math.round(d.properties.poverty_rate * 1000) / 10 + "%</b><br>"
+                + "# of hubway stations: <b>" + d.properties.stations) + "</b>";
             })
           .on("mouseout", function(d) {
               d3.select(this).attr("fill", "#d3d3d3").attr("stroke", "#555");
