@@ -95,6 +95,16 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+ .map {
+   margin-top: 0px;
+ }
+ 
+ body {
+   margin-top: 20px;
+   font-size: 30px;
+   background-color: #eee;
+   text-align: center;
+ }
 
 
 td, th {
