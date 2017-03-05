@@ -85,7 +85,8 @@ $(document).ready(() => {
           .on("mouseover", function(d) {
               d3.select(this).transition()
               .duration(HOVER_TRANS_MS)
-              .style("opacity", "1");
+              .style("fill", "#bfbfbf");
+              
               div.classed("hidden", false);
               div.style("opacity", "1");
               div.html(getTractTooltip(d));
@@ -93,6 +94,7 @@ $(document).ready(() => {
           .on("mouseout", function(d) {
               d3.select(this).transition()
               .style("opacity", "0.75")
+              .style("fill", fillFn)
               .duration(HOVER_TRANS_MS);
               div.classed("hidden", true);
            });
