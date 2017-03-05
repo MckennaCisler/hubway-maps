@@ -3,27 +3,6 @@ var stations = [];
 // Waits for DOM to load before running
 $(document).ready(() => {
 
-    // Create table out of stations
-    $.post("/stations",  responseJSON => {
-        stations = responseJSON;
-        console.log(responseJSON);
-
-        d3.select("#station-table > tbody")
-            .selectAll("tr")
-            .data(responseJSON)
-            .enter().append("tr")
-              .html(function(data) {
-                var innerHTML = "";
-                    for (let stationProp in data) {
-                        if (data.hasOwnProperty(stationProp)) {
-                            innerHTML += "<td>" + data[stationProp] +"</td>";
-                        }
-                    }
-                    return innerHTML;
-                });
-    });
-
-
     var width = 700,
         height = 580;
 
@@ -59,11 +38,69 @@ $(document).ready(() => {
           .attr("stroke", "#555")
           .attr("class", "boundary")
           .on("mouseover", function() {
-                d3.select(this).attr("fill", "#3978e5");
+                d3.select(this)
+                .attr("fill", "#3978e5")
+                .attr("stroke", "#3978e5");
             })
           .on("mouseout", function() {
-                d3.select(this).attr("fill", "#d3d3d3");
+                d3.select(this)
+                .attr("fill", "#d3d3d3")
+                .attr("stroke", "#555");
             });
       }
+    });
+    
+    d3.json("data/hubway_stations.geo.json", function(error, statData) {
+        // Draw the hudway data on the map
+        if (error) {
+            console.log(error);
+        } else {
+            var features = statData.features;
+            console.log(features);
+      
+            mapLayer.selectAll("circle")
+                .data(features)
+                .enter().append("circle")
+                .attr("cx", function (d) {
+                    console.log(d);
+                    return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[0];
+                })
+                .attr("cy", function (d) {
+                    return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[1];
+                })
+                .attr("fill", "#78e539")
+                .attr("r", 5)
+                .on("mouseover", function() {
+                      d3.select(this)
+                      .attr("r",10);
+                  })
+                .on("mouseout", function() {
+                      d3.select(this)
+                      .attr("r", 5);
+                });
+        }
+    });
+    
+    $.post("/stations",  responseJSON => {
+        stations = responseJSON;
+        console.log(responseJSON);
+        
+        
+            
+
+        // Create table out of stations
+        d3.select("#station-table > tbody")
+            .selectAll("tr")
+            .data(responseJSON)
+            .enter().append("tr")
+              .html(function(data) {
+                var innerHTML = "";
+                    for (let stationProp in data) {
+                        if (data.hasOwnProperty(stationProp)) {
+                            innerHTML += "<td>" + data[stationProp] +"</td>";
+                        }
+                    }
+                    return innerHTML;
+                });
     });
 });
