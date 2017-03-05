@@ -105,6 +105,10 @@ textarea {
    background-color: #eee;
    text-align: center;
  }
+ 
+ p {
+    font-size: 14pt;
+ }
 
  .boundary {
    border-width: 5px;
