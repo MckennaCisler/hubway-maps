@@ -42,7 +42,13 @@ $(document).ready(() => {
           .enter().append("path")
           .attr("d", geoPath)
           .attr("fill", "#4d4d4d")
-          .attr("class", "boundary");
+          .attr("class", "boundary")
+          .on("mouseover", function() {
+                d3.select(this).attr("fill", "#3978e5");
+            })
+          .on("mouseout", function() {
+                d3.select(this).attr("fill", "#4d4d4d");
+            });
       }
     });
 });
