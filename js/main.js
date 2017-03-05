@@ -56,7 +56,7 @@ $(document).ready(() => {
           .enter().append("path")
           .attr("d", geoPath)
           .attr("fill", "#d3d3d3")
-          .attr("stroke", "#555");
+          .attr("stroke", "#555")
           .attr("class", "boundary")
           .on("mouseover", function() {
                 d3.select(this).attr("fill", "#3978e5");
