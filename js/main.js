@@ -2,17 +2,19 @@ var stations = [];
 
 // Waits for DOM to load before running
 $(document).ready(() => {
+    var HOVER_TRANS_MS = 150;
 
-    var width = 700,
-        height = 580;
-
-    var svg = d3.select("svg");
+    var width = 1700,
+        height = 800;
+    var svg = d3.select("svg")
+        .attr("width", width)
+        .attr("height", height);
 
     var mapLayer = svg.append("g")
       .classed('map-layer', true);
 
     var albersProjection = d3.geoAlbers()
-      .scale(500000)
+      .scale(700000)
       .rotate([71.1097, 0])
       .center([0, 42.3736])
       .translate([width/2, height/2]);
@@ -20,6 +22,8 @@ $(document).ready(() => {
     var geoPath = d3.geoPath()
         .projection(albersProjection);
 
+     
+        
     // Load map data
     d3.json('cambridge.geo.json', function(error, mapData) {
       if (error) {
@@ -47,37 +51,43 @@ $(document).ready(() => {
                 .attr("fill", "#d3d3d3")
                 .attr("stroke", "#555");
             });
-      }
-    });
-    
-    d3.json("data/hubway_stations.geo.json", function(error, statData) {
-        // Draw the hudway data on the map
-        if (error) {
-            console.log(error);
-        } else {
-            var features = statData.features;
-            console.log(features);
-      
-            mapLayer.selectAll("circle")
-                .data(features)
-                .enter().append("circle")
-                .attr("cx", function (d) {
-                    console.log(d);
-                    return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[0];
-                })
-                .attr("cy", function (d) {
-                    return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[1];
-                })
-                .attr("fill", "#78e539")
-                .attr("r", 5)
-                .on("mouseover", function() {
-                      d3.select(this)
-                      .attr("r",10);
-                  })
-                .on("mouseout", function() {
-                      d3.select(this)
-                      .attr("r", 5);
-                });
+          
+        // nest because the first elements put onto an SVG show up on top
+        d3.json("data/hubway_stations.geo.json", function(error, statData) {
+            // Draw the hudway data on the map
+            if (error) {
+                console.log(error);
+            } else {
+                var features = statData.features;
+                console.log(features);
+          
+                mapLayer.selectAll("circle")
+                    .data(features)
+                    .enter().append("circle")
+                    .attr("cx", function (d) {
+                        console.log(d);
+                        return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[0];
+                    })
+                    .attr("cy", function (d) {
+                        return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[1];
+                    })
+                    .attr("fill", "#78e539")
+                    .style("z-index", 1000)
+                    .attr("r", 5)
+                    .on("mouseover", function() {
+                          d3.select(this)
+                          .transition()
+                            .duration(HOVER_TRANS_MS)
+                            .attr("r",10);
+                      })
+                    .on("mouseout", function() {
+                          d3.select(this)
+                          .transition()
+                            .duration(HOVER_TRANS_MS)
+                            .attr("r", 5);
+                    });
+                }
+            });
         }
     });
     
