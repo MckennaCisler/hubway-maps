@@ -113,10 +113,11 @@ textarea {
  div.tooltip {
      position: absolute;
      text-align: center;
-     padding: 2px;
+     padding: 5px;
      font: 12px sans-serif;
      background: white;
-     width: 60px;
+     min-width: 70px;
+     width: auto;
      border: 0px;
      border-radius: 6px;
      pointer-events: none;
