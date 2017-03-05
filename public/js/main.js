@@ -1,5 +1,6 @@
 var stations = [];
 
+
 // Waits for DOM to load before running
 $(document).ready(() => {
 
@@ -23,14 +24,14 @@ $(document).ready(() => {
                 });
     });
 
-
     var width = 700,
         height = 580;
 
-    var svg = d3.select("svg");
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip");
+    div.classed("hidden", true);
 
-    var mapLayer = svg.append("g")
-      .classed('map-layer', true);
+    var svg = d3.select("svg");
 
     var albersProjection = d3.geoAlbers()
       .scale(500000)
@@ -41,6 +42,10 @@ $(document).ready(() => {
     var geoPath = d3.geoPath()
         .projection(albersProjection);
 
+    document.onmousemove = function(e) {
+      div.attr("style", "left:" + (e.pageX + 25) + "px;top:" + e.pageY + "px");
+    }
+
     // Load map data
     d3.json('cambridge.geo.json', function(error, mapData) {
       if (error) {
@@ -48,22 +53,25 @@ $(document).ready(() => {
       } else {
         var features = mapData.features;
         console.log(features);
-        console.log(mapLayer);
 
         // Draw each province as a path
-        mapLayer.selectAll("path")
+        svg.selectAll("path")
           .data(features)
           .enter().append("path")
           .attr("d", geoPath)
           .attr("fill", "#d3d3d3")
           .attr("stroke", "#555")
           .attr("class", "boundary")
-          .on("mouseover", function() {
-                d3.select(this).attr("fill", "#3978e5");
+          .on("mouseover", function(d) {
+              d3.select(this).attr("fill", "#3978e5");
+              div.classed("hidden", false);
+              div.style("opacity", 1);
+              div.html(d.id);
             })
-          .on("mouseout", function() {
-                d3.select(this).attr("fill", "#d3d3d3");
-            });
+          .on("mouseout", function(d) {
+              d3.select(this).attr("fill", "#d3d3d3");
+              div.classed("hidden", true);
+           });
       }
     });
 });

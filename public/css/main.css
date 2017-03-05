@@ -110,6 +110,17 @@ textarea {
    border-width: 5px;
  }
 
+ div.tooltip {
+     position: absolute;
+     text-align: center;
+     padding: 2px;
+     font: 12px sans-serif;
+     background: white;
+     width: 60px;
+     border: 0px;
+     border-radius: 6px;
+     pointer-events: none;
+ }
 
 td, th {
     padding: 0.5em;
