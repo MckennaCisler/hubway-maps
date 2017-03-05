@@ -106,9 +106,9 @@ $(document).ready(() => {
 });
 
 function getTractTooltip(d) {
-    return d.properties.population + "</br>" + 
-            d.properties.poverty_rate + "</br>" +
-            d.properties.stations;
+    return "Population: <b>" + d.properties.population + "</b><br>" +
+            "Poverty rate: <b>" + Math.round(d.properties.poverty_rate * 1000) / 10 + "%</b><br>" +
+            "# of hubway stations: <b>" + d.properties.station;
 }
 
 function getStationTooltip(d) {
