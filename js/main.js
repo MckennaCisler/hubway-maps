@@ -1,6 +1,6 @@
 // Waits for DOM to load before running
 $(document).ready(() => {
-    var HOVER_TRANS_MS = 150;
+    var HOVER_TRANS_MS = 250;
 
     var div = d3.select("body").append("div")
         .attr("class", "tooltip");
@@ -73,7 +73,6 @@ $(document).ready(() => {
                   .data(features)
                   .enter().append("circle")
                   .attr("cx", function (d) {
-                      console.log(d);
                       return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[0];
                   })
                   .attr("cy", function (d) {
@@ -108,11 +107,10 @@ $(document).ready(() => {
 function getTractTooltip(d) {
     return "Population: <b>" + d.properties.population + "</b><br>" +
             "Poverty rate: <b>" + Math.round(d.properties.poverty_rate * 1000) / 10 + "%</b><br>" +
-            "# of hubway stations: <b>" + d.properties.station;
+            "# of hubway stations: <b>" + d.properties.stations;
 }
 
 function getStationTooltip(d) {
     return d.properties.station + "</br>" + 
-            d.properties.municipal + "</br>" +
-            d.properties.status;
+            d.properties.municipal;
 }
