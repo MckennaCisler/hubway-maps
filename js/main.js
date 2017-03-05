@@ -1,5 +1,3 @@
-var stations = [];
-
 // Waits for DOM to load before running
 $(document).ready(() => {
     var HOVER_TRANS_MS = 150;
@@ -26,7 +24,7 @@ $(document).ready(() => {
 
     document.onmousemove = function(e) {
       div.attr("style", "left:" + (e.pageX + 25) + "px;top:" + e.pageY + "px");
-    }
+    };
 
     // Load map data
     d3.json('cambridge.geo.json', function(error, mapData) {
@@ -45,13 +43,17 @@ $(document).ready(() => {
           .attr("stroke", "#555")
           .attr("class", "boundary")
           .on("mouseover", function(d) {
-              d3.select(this).attr("fill", "#3978e5").attr("stroke", "#3978e5");
+              d3.select(this).transition()
+              .duration(HOVER_TRANS_MS)
+              .attr("fill", "#3978e5").attr("stroke", "#3978e5");
               div.classed("hidden", false);
               div.style("opacity", 1);
               div.html(d.id);
             })
           .on("mouseout", function(d) {
-              d3.select(this).attr("fill", "#d3d3d3").attr("stroke", "#555");
+              d3.select(this)
+              .duration(HOVER_TRANS_MS)
+              .attr("fill", "#d3d3d3").attr("stroke", "#555");
               div.classed("hidden", true);
            });
       }
