@@ -22,6 +22,15 @@ $(document).ready(() => {
     var geoPath = d3.geoPath()
         .projection(albersProjection);
 
+    var color = d3.scaleLinear()
+      .domain([0, 0.3])
+      .clamp(true)
+      .range(['#f2f2f2', '#cc0000']);
+
+    function fillFn(d){
+      return color(d.properties.poverty_rate);
+    }
+
     document.onmousemove = function(e) {
       div.attr("style", "left:" + (e.pageX + 25) + "px;top:" + e.pageY + "px");
     };
@@ -32,7 +41,7 @@ $(document).ready(() => {
         height = 500 - margin.top - margin.bottom;
       
     var max_poverty_rate = 26.5;
-    var max_stations_per = 4;
+    var max_stations_per = 3;
     
     // add the graph canvas to the body of the webpage
     var svgGraph = d3.select("#bar-chart").append("svg")
@@ -42,20 +51,20 @@ $(document).ready(() => {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
           
     // setup x 
-    var xValue = function(d) { return d.properties.stations * 100;}, // data -> value
+    var xValue = function(d) {return d.properties.poverty_rate * 10000; }, // data -> value
         xScale = d3.scaleLinear().range([0, width]), // value -> display
         xMap = function(d) { return xScale(xValue(d));}, // data -> display
         xAxis = d3.axisBottom().scale(xScale);
     
     // setup y
-    var yValue = function(d) { return d.properties.poverty_rate * 10000;}, // data -> value
+    var yValue = function(d) { return d.properties.stations * 100;}, // data -> value
         yScale = d3.scaleLinear().range([height, 0]), // value -> display
         yMap = function(d) { return yScale(yValue(d));}, // data -> display
         yAxis = d3.axisLeft().scale(yScale);
         
     // don't want dots overlapping axis, so add in buffer to data domain
-    xScale.domain([0, 4]);
-    yScale.domain([0, max_poverty_rate]);
+    yScale.domain([0, max_stations_per]);
+    xScale.domain([0, max_poverty_rate]);
         
     // Load map data
     d3.json('data/complete_data.json', function(error, mapData) {
@@ -70,23 +79,21 @@ $(document).ready(() => {
           .data(features)
           .enter().append("path")
           .attr("d", geoPath)
-          .attr("fill", "#d3d3d3")
-          .attr("stroke", "#555")
+          .style("fill", fillFn)
+          .style("stroke", '#000000')
           .attr("class", "boundary")
           .on("mouseover", function(d) {
               d3.select(this).transition()
               .duration(HOVER_TRANS_MS)
-              .attr("fill", "#3978e5").attr("stroke", "#3978e5");
-              
+              .style("opacity", "1");
               div.classed("hidden", false);
-              div.style("opacity", 1);
+              div.style("opacity", "1");
               div.html(getTractTooltip(d));
             })
           .on("mouseout", function(d) {
               d3.select(this).transition()
-              .duration(HOVER_TRANS_MS)
-              .attr("fill", "#d3d3d3").attr("stroke", "#555");
-              
+              .style("opacity", "0.75")
+              .duration(HOVER_TRANS_MS);
               div.classed("hidden", true);
            });
 
@@ -119,19 +126,19 @@ $(document).ready(() => {
            .data(features)
            .enter().append("circle")
            .attr("class", "dot")
-           .attr("r", 5)
+           .attr("r", 7)
            .attr("cx", function(d) {
-               return d.properties.stations * (width / max_stations_per);
+               return (width / max_poverty_rate) * (d.properties.poverty_rate * 100);
            })
            .attr("cy", function(d) {
-               return (height / max_poverty_rate) * (max_poverty_rate - d.properties.poverty_rate * 100);
+               return (max_stations_per - d.properties.stations) * (height / max_stations_per);
            })
            .style("fill", "#000")
            .on("mouseover", function(d) {
                d3.select(this)
                    .transition()
                      .duration(HOVER_TRANS_MS)
-                     .attr("r",10);
+                     .attr("r",14);
                      
                
                div.classed("hidden", false);
@@ -142,7 +149,7 @@ $(document).ready(() => {
                d3.select(this)
                    .transition()
                      .duration(HOVER_TRANS_MS)
-                     .attr("r", 5);
+                     .attr("r", 7);
                
                div.classed("hidden", true);
             });
@@ -173,7 +180,7 @@ $(document).ready(() => {
                         .transition()
                           .duration(HOVER_TRANS_MS)
                           .attr("r",10);
-                          
+
                         div.classed("hidden", false);
                         div.style("opacity", 1);
                         div.html(getStationTooltip(d));
@@ -183,7 +190,7 @@ $(document).ready(() => {
                         .transition()
                           .duration(HOVER_TRANS_MS)
                           .attr("r", 5);
-                          
+
                         div.classed("hidden", true);
                   });
               }
