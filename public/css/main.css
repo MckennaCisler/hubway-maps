@@ -114,13 +114,14 @@ textarea {
      position: absolute;
      opacity: 0.95;
      text-align: center;
-     padding: 5px;
+     padding: 10px;
      font: 12px sans-serif;
      background: white;
      width: auto;
      min-width: 200px;
      border: 0px;
      border-radius: 6px;
+     /*box-shadow: 0px 0px 15px #aaa;*/
      pointer-events: none;
      font-size: 16px;
  }
