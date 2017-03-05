@@ -69,25 +69,22 @@ $(document).ready(() => {
               var features = statData.features;
               console.log(features);
 
-              svg.selectAll("image")
+              svg.selectAll("circle")
                   .data(features)
-                  .enter().append("image")
-                  .attr("x", function (d) {
+                  .enter().append("circle")
+                  .attr("cx", function (d) {
                       return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[0];
                   })
-                  .attr("y", function (d) {
+                  .attr("cy", function (d) {
                       return albersProjection([parseFloat(d.properties.lng), parseFloat(d.properties.lat)])[1];
                   })
-                  .attr("xlink:href", "img/bike-wheel.svg")
                   .attr("fill", "#191919")
-                  .attr("width", 20)
-                  .attr("height", 20)
+                  .attr("r", 5)
                   .on("mouseover", function(d) {
                         d3.select(this)
                         .transition()
                           .duration(HOVER_TRANS_MS)
-                          .attr("width", 40)
-                          .attr("height", 40);
+                          .attr("r",10);
                           
                         div.classed("hidden", false);
                         div.style("opacity", 1);
@@ -97,8 +94,7 @@ $(document).ready(() => {
                         d3.select(this)
                         .transition()
                           .duration(HOVER_TRANS_MS)
-                          .attr("width", 20)
-                          .attr("height", 20);
+                          .attr("r", 5);
                           
                         div.classed("hidden", true);
                   });
