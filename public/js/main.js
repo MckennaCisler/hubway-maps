@@ -7,7 +7,7 @@ $(document).ready(() => {
     $.post("/stations",  responseJSON => {
         stations = responseJSON;
         console.log(responseJSON);
-        
+
         d3.select("#station-table > tbody")
             .selectAll("tr")
             .data(responseJSON)
@@ -55,13 +55,14 @@ $(document).ready(() => {
           .data(features)
           .enter().append("path")
           .attr("d", geoPath)
-          .attr("fill", "#4d4d4d")
+          .attr("fill", "#d3d3d3")
+          .attr("stroke", "#555")
           .attr("class", "boundary")
           .on("mouseover", function() {
                 d3.select(this).attr("fill", "#3978e5");
             })
           .on("mouseout", function() {
-                d3.select(this).attr("fill", "#4d4d4d");
+                d3.select(this).attr("fill", "#d3d3d3");
             });
       }
     });
