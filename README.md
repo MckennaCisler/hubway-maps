@@ -9,6 +9,6 @@ Using data from Cambridge, MA, we created several visualizations:
 This project was made at the 2017 Brown University Data Science Datathon and used d3.js, HTML5 Boilerplate, and node.js.
 
 ## Contributers
-Dorian Gregory
-Rohan Jha
+Dorian Gregory,
+Rohan Jha, 
 Mckenna Cisler
